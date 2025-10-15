@@ -54,7 +54,7 @@ class UserController extends Controller
         $jwt = $request->get('jwt_data');
 
         if(!$jwt){
-            return respsonse()->json(['message' => 'Invalid Token'], 401);
+            return response()->json(['message' => 'Invalid Token'], 401);
         }
 
         $user = User::find($jwt['sub']); //busca o usuario pelo id do token
