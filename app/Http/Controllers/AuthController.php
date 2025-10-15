@@ -16,9 +16,9 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $credentials['username'])->firt();
+        $user = User::where('username', $credentials['username'])->first();
 
-        if(!$user || Hash::check($credentials['password'], $user->password)){
+        if(!$user || !Hash::check($credentials['password'], $user->password)){
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -29,6 +29,7 @@ class AuthController extends Controller
             'expires_in' => env('JWT_TTL', 3600)
         ], 200);
     }
+
 
     public function logout(Request $request)
     {
