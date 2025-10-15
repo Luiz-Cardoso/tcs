@@ -10,25 +10,26 @@ use App\Services\JWTService;
 class AuthController extends Controller
 {
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    $credentials = $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        $user = User::where('username', $credentials['username'])->first();
+    $user = User::where('username', $credentials['username'])->first();
 
-        if(!$user || !Hash::check($credentials['password'], $user->password)){
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
-        $token = JWTService::generateToken($user);
-
-        return response()->json([
-            'token' => $token,
-            'expires_in' => env('JWT_TTL', 3600)
-        ], 200);
+    if(!$user || !Hash::check($credentials['password'], $user->password)){
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+    $token = JWTService::generateToken($user);
+
+    return response()->json([
+        'token' => $token,
+        'expires_in' => env('JWT_TTL', 3600)
+    ], 200);
+}
+
 
 
     public function logout(Request $request)
